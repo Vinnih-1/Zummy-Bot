@@ -3,16 +3,17 @@ package kazumy.project.zummy.commands.moderation;
 import kazumy.project.zummy.commands.BaseCommand;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 
 public class BanCMD extends BaseCommand {
 
-	public BanCMD(String name, String aliases, String usage, Permission permission) {
-		super(name, aliases, usage, permission);
+	public BanCMD() {
+		super("ban", "banir", "[%s]ban [Membro]", Permission.BAN_MEMBERS);
 	}
 
 	@Override
-	public void execute(Member member, String[] args) {
+	public void execute(Member member, Message message) {
 	}
 
 	@Override
