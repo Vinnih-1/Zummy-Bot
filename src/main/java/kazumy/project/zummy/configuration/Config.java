@@ -10,7 +10,9 @@ import java.io.OutputStream;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -47,11 +49,20 @@ public class Config {
 		json = new JSONObject();
 		
 		json.put("token", "Seu-Token");
-		json.put("status", "Zummy :p");
+		json.put("prefix", "-");
+		json.put("status", "[%s] para informações");
+		
+		val array = new JSONArray();
+		array.addAll(Arrays.asList("Financeiro","Técnico","Dúvidas"));
+		
+		val categories = new JSONObject();
+		categories.put("categories", array.toJSONString());
+		
+		json.put("ticket", categories);
 		
 	    val path = Paths.get("./config.json");
 	    val config = json.toJSONString().getBytes();
-
+	    
 	    try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(path))) {
 	      out.write(config, 0, config.length);
 	    } catch (IOException x) {
@@ -66,7 +77,7 @@ public class Config {
 			    BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
 			    String line = null;
 			    while ((line = reader.readLine()) != null) {
-			        System.out.println(line);
+			        System.out.println("Arquivo de configuração: " + line);
 			        
 					val parser = new JSONParser();
 					json = (JSONObject) parser.parse(line);
