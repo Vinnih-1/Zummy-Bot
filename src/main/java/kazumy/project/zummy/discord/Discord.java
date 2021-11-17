@@ -29,8 +29,8 @@ public class Discord {
 		try {
 			bot = JDABuilder.createDefault(token).enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES).build().awaitReady();
 			bot.addEventListener(new EventListener());
-			
-			bot.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing(status));
+			EventListener.PREFIX = String.valueOf(config.getJson().get("prefix"));
+			bot.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing(String.format(status, EventListener.PREFIX)));
 		} catch (LoginException e) {
 			System.out.println("[Zummy] Algo de errado com o token provido.");
 		}
