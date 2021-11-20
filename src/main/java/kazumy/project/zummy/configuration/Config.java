@@ -1,91 +1,65 @@
 package kazumy.project.zummy.configuration;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.simpleyaml.configuration.file.YamlFile;
 
 import kazumy.project.zummy.MainZummy;
 import lombok.Data;
+import lombok.SneakyThrows;
 import lombok.val;
 
 @SuppressWarnings("all")
-@Data(staticConstructor = "of")
 public class Config {
 	
 	private static final String PATH = new File("").getAbsolutePath(); 
+	private YamlFile yamlfile;
 	
-	private final MainZummy instance;
-	private JSONObject json;
-	
-	public Config createConfig() {
-		val file = new File(PATH, "config.json");
+	@SneakyThrows
+	public YamlFile basicConfig() {
+		yamlfile = new YamlFile("configuration/config.yml");
 		
-		if (!file.exists())
-			try {
-				file.createNewFile();
-				writeConfig(file);
-				
-			} catch (IOException e) {
-				System.out.println("[Zummy] Falha ao criar o arquivo de configuração.");
-			}
+		if (!yamlfile.exists()) yamlfile.createNewFile(false);
+		else yamlfile.load();
 		
-		return this;
+		yamlfile.addDefault("bot.token", "Seu token");
+		yamlfile.addDefault("bot.prefix", "-");
+		yamlfile.addDefault("bot.chat-id", "");
+		yamlfile.addDefault("bot.commands", false);
+		yamlfile.addDefault("bot.status", "[%s] para informações");
+		
+		ticketConfig();
+		yamlfile.save();
+		
+		
+		return yamlfile;
 	}
 	
-	private void writeConfig(File file) {
-		json = new JSONObject();
+	public void ticketConfig() {
+		yamlfile.setComment("ticket", " - ");
+		yamlfile.setComment("ticket", " - ");
 		
-		json.put("token", "Seu-Token");
-		json.put("prefix", "-");
-		json.put("status", "[%s] para informações");
 		
-		val array = new JSONArray();
-		array.addAll(Arrays.asList("Financeiro","Técnico","Dúvidas"));
+		yamlfile.addDefault("ticket.title", "📫  Central de Atendimento");
+		yamlfile.addDefault("ticket.image", "https://i.imgur.com/cX8Czip.png");
+		yamlfile.addDefault("ticket.suporte-id", "");
+		yamlfile.addDefault("ticket.category-id", "");
+		yamlfile.addDefault("ticket.description", Arrays.asList("Olá, seja bem-vindo a central de atendimento da zPluginS.",
+				"Para iniciar seu atendimento reaja no ícone abaixo.",
+				"Seu atendimento será realizado por meio de um canal privado."));
 		
-		val categories = new JSONObject();
-		categories.put("categories", array.toJSONString());
+		if (yamlfile.contains("ticket.fields")) return;
 		
-		json.put("ticket", categories);
-		
-	    val path = Paths.get("./config.json");
-	    val config = json.toJSONString().getBytes();
-	    
-	    try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(path))) {
-	      out.write(config, 0, config.length);
-	    } catch (IOException x) {
-	    	System.out.println("[Zummy] Falha ao escrever o arquivo de configuração.");
-	    }
-	}
-
-	public Config readConfig() {
-		val path = Paths.get("./config.json");
-		
-		try (InputStream in = Files.newInputStream(path);
-			    BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-			    String line = null;
-			    while ((line = reader.readLine()) != null) {
-			        System.out.println("Arquivo de configuração: " + line);
-			        
-					val parser = new JSONParser();
-					json = (JSONObject) parser.parse(line);
-			    }
-			} catch (IOException | ParseException e) {
-				System.out.println("[Zummy] Falha ao ler o arquivo de configuração.");
-			}
-		
-		return this;
+		yamlfile.addDefault("ticket.fields.1.name", "Tickets:");
+		yamlfile.addDefault("ticket.fields.1.value", ":incoming_envelope: **Abertos**: ?\\n:mailbox: **Totais**: ?");
+		yamlfile.addDefault("ticket.fields.1.inline", true);
+		yamlfile.addDefault("ticket.fields.2.name", "Links:");
+		yamlfile.addDefault("ticket.fields.2.value", ":earth_americas: [Site](https://google.com/)\\n:globe_with_meridians: [Central](https://google.com/)\\n:bookmark: [Tutoriais](https://google.com/)");
+		yamlfile.addDefault("ticket.fields.2.inline", true);
+		yamlfile.addDefault("ticket.fields.3.name", "Horário de Atendimento:");
+		yamlfile.addDefault("ticket.fields.3.value", ":timer: `08:00 as 19:00 (UTC-3)`");
+		yamlfile.addDefault("ticket.fields.3.inline", true);
 	}
 }
