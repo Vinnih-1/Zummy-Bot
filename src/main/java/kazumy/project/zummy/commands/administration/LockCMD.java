@@ -16,9 +16,10 @@ public class LockCMD extends BaseCommand {
 	@Override
 	public void execute(Member member, Message message) {
 		val role = message.getGuild().getRoleById("896553346738057226");
-		
-		message.getTextChannel().getManager().putPermissionOverride(role, 0, 2048).queue();;
-		message.getTextChannel().sendMessage(String.format("Chat travado por <@%s>", message.getAuthor().getId())).queue();
+		val permOverrides = message.getTextChannel().getRolePermissionOverrides();
+		val overrided = permOverrides.stream().anyMatch(c -> c.getRole().equals(role) && c.getDenied().contains(Permission.MESSAGE_WRITE));
+		message.getTextChannel().getManager().putPermissionOverride(role, (!overrided ? 0 : 2048), (overrided ? 0 : 2048)).queue();
+		message.getTextChannel().sendMessage(String.format("Chat " + (overrided ? "destravado" : "travado") + " por <@%s>", message.getAuthor().getId())).queue();
 	}
 
 	@Override
