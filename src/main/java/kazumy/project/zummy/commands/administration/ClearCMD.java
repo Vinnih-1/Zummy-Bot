@@ -1,7 +1,5 @@
 package kazumy.project.zummy.commands.administration;
 
-import java.util.List;
-
 import kazumy.project.zummy.commands.BaseCommand;
 import kazumy.project.zummy.listener.EventListener;
 import lombok.val;
@@ -35,12 +33,9 @@ public class ClearCMD extends BaseCommand {
 			message.reply("O limite máximo para exclusão é de 100").queue();
 			return;
 		}
-		
-		final List<Message> messages = channel.getHistory().retrievePast(Integer.parseInt(args[1])).complete();
+		val messages = channel.getHistory().retrievePast(Integer.parseInt(args[1])).complete();
 		channel.purgeMessages(messages);
-
 		channel.sendMessage(String.format("Um total de %s mensagens foram deletadas", String.valueOf(messages.size()))).queue();;
-		
 	}
 
 	@Override
