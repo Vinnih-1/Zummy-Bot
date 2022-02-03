@@ -21,7 +21,8 @@ import net.dv8tion.jda.api.interactions.components.Button;
 public class TicketCMD extends BaseCommand {
 	
 	public TicketCMD() {
-		super("setticket", "", "[%s]setticket", Permission.ADMINISTRATOR);
+		super("setticket", "", "[%s]setticket", "", Permission.ADMINISTRATOR);
+		this.setButtonID("ticket");
 	}
 
 	@Override
@@ -29,14 +30,14 @@ public class TicketCMD extends BaseCommand {
 		val ticketList = MainZummy.getInstance().getTicketStorage().getTickets();
 		val config = MainZummy.getInstance().getConfig();
 		val category = event.getGuild().getCategoryById(config.getString("ticket.category-id"));
-		val name = "ticket-00" + ticketList.size() + 1;
+		val name = "ticket-" + (ticketList.size() + 1);
 		val channel = new ArrayList<TextChannel>();
 		
-		if (event.getButton().getId().equals("open-ticket")) {
+		if (event.getButton().getId().equals(this.getButtonID() + "-" + "open-ticket")) {
 			val hasTicketOpened = ticketList.stream().anyMatch(c -> c.getMember().getUser().getId().equals(event.getUser().getId()));
-			
+
 			if (hasTicketOpened) {
-				event.deferReply(true).setContent("Você já tem um ticket aberto.").queue();;
+				event.deferReply(true).setContent("Você já tem um ticket aberto.").queue();
 				return;
 			}
 			category.createTextChannel(name).queue(ticket -> {
@@ -57,11 +58,11 @@ public class TicketCMD extends BaseCommand {
 	    		embed.setDescription(String.format("Seja bem vindo <@%s>, aqui a equipe irá lhe atender.", event.getUser().getId()));
 	    		embed.setColor(Color.GREEN);
 	    		
-	    		ticket.sendMessage(embed.build()).setActionRow(Button.danger("close-ticket", "Fechar ticket")).queue();
+	    		ticket.sendMessage(embed.build()).setActionRow(Button.danger(this.getButtonID() + "-" + "close-ticket", "Fechar ticket")).queue();
 			});
 		}
 		
-		if (event.getButton().getId().equals("close-ticket")) {
+		if (event.getButton().getId().equals(this.getButtonID() + "-" + "close-ticket")) {
 			val ticket = ticketList.stream().filter(c -> c.getMember().getUser().getId().equals(event.getUser().getId()))
 					.findFirst().orElse(null);
 			MainZummy.getInstance().getTicketStorage().getTickets().remove(ticket);
@@ -99,6 +100,11 @@ public class TicketCMD extends BaseCommand {
 			embed.setImage(config.getString("ticket.image"));
 			embed.setFooter(user.getAsTag(), user.getAvatarUrl());
 		
-		message.getTextChannel().sendMessage(embed.build()).setActionRow(Button.secondary("open-ticket", "Abrir um ticket").withEmoji(Emoji.fromUnicode("U+1F4EB"))).queue();
+		message.getTextChannel().sendMessage(embed.build()).setActionRow(Button.secondary(this.getButtonID() + "-" + "open-ticket", "Abrir um ticket").withEmoji(Emoji.fromUnicode("U+1F4EB"))).queue();
+	}
+
+	@Override
+	public void configure() {
+		this.setEmoji(Emoji.fromUnicode(""));
 	}
 }
