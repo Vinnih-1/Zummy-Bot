@@ -1,4 +1,4 @@
-package kazumy.project.zummy.buttons;
+package kazumy.project.zummy.components;
 
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 
