@@ -3,19 +3,22 @@ package kazumy.project.zummy.commands.administration;
 import java.awt.Color;
 
 import kazumy.project.zummy.commands.BaseCommand;
+import kazumy.project.zummy.components.MenuAction;
 import kazumy.project.zummy.listener.EventListener;
 import lombok.val;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
 
 @SuppressWarnings("deprecation")
-public class PluginCMD extends BaseCommand {
+public class PluginCMD extends BaseCommand implements MenuAction {
 
 	public PluginCMD() {
-		super("plugin", "", "[%s]plugin <Nome do Plugin>; <Valor>; <Link>", Permission.ADMINISTRATOR);
+		super("plugin", "", "[%s]plugin <Nome do Plugin>; <Valor>; <Link>", "", Permission.ADMINISTRATOR);
 	}
 
 	@Override
@@ -40,5 +43,14 @@ public class PluginCMD extends BaseCommand {
 		embed.setThumbnail("https://cdn.discordapp.com/icons/832601856403701771/94a08bab250ed87791c68bec4e7a4013.png");
 		
 		message.getJDA().getTextChannelById("832817270598139934").sendMessage(embed.build()).queue();
+	}
+
+	@Override
+	public void configure() {
+		this.setEmoji(Emoji.fromUnicode(""));
+	}
+
+	@Override
+	public void selectionMenu(SelectionMenuEvent event) {	
 	}
 }

@@ -7,6 +7,7 @@ import kazumy.project.zummy.listener.EventListener;
 import lombok.val;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
@@ -16,7 +17,7 @@ import net.dv8tion.jda.api.interactions.components.Button;
 public class UpdateCMD extends BaseCommand {
 
 	public UpdateCMD() {
-		super("update", "", "[%s]update <Nome do Plugin>; <Versão>; <Atualizações>; <Link>", Permission.ADMINISTRATOR);
+		super("update", "", "[%s]update <Nome do Plugin>; <Versão>; <Atualizações>; <Link>", "", Permission.ADMINISTRATOR);
 	}
 
 	@Override
@@ -41,5 +42,10 @@ public class UpdateCMD extends BaseCommand {
 		embed.setThumbnail("https://cdn.discordapp.com/icons/832601856403701771/94a08bab250ed87791c68bec4e7a4013.png");		
 		
 		message.getJDA().getTextChannelById("865572465115267103").sendMessage(embed.build()).setActionRow(Button.link(text[3], "Download")).queue();
+	}
+
+	@Override
+	public void configure() {
+		this.setEmoji(Emoji.fromUnicode(""));
 	}
 }

@@ -4,6 +4,7 @@ import kazumy.project.zummy.commands.BaseCommand;
 import kazumy.project.zummy.listener.EventListener;
 import lombok.val;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
@@ -11,7 +12,7 @@ import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 public class ClearCMD extends BaseCommand {
 
 	public ClearCMD() {
-		super("clear", "limpar", "[%s]clear [Quantidade]", Permission.MESSAGE_MANAGE);
+		super("clear", "limpar", "[%s]clear [Quantidade]", "", Permission.MESSAGE_MANAGE);
 	}
 
 	@Override
@@ -40,5 +41,10 @@ public class ClearCMD extends BaseCommand {
 
 	@Override
 	public void buttonClickEvent(ButtonClickEvent event) {
+	}
+
+	@Override
+	public void configure() {
+		this.setEmoji(Emoji.fromUnicode(""));
 	}
 }

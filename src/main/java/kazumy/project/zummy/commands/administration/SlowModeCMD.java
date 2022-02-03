@@ -4,6 +4,7 @@ import kazumy.project.zummy.commands.BaseCommand;
 import kazumy.project.zummy.listener.EventListener;
 import lombok.val;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
@@ -11,7 +12,7 @@ import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 public class SlowModeCMD extends BaseCommand {
 
 	public SlowModeCMD() {
-		super("slowmode", "", "[%s]slowmode [Tempo]", Permission.MANAGE_CHANNEL);
+		super("slowmode", "", "[%s]slowmode [Tempo]", "", Permission.MANAGE_CHANNEL);
 	}
 
 	@Override
@@ -33,5 +34,10 @@ public class SlowModeCMD extends BaseCommand {
 
 	@Override
 	public void buttonClickEvent(ButtonClickEvent event) {
+	}
+
+	@Override
+	public void configure() {
+		this.setEmoji(Emoji.fromUnicode(""));
 	}
 }

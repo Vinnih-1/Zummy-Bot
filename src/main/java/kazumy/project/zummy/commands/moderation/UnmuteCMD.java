@@ -4,6 +4,7 @@ import kazumy.project.zummy.commands.BaseCommand;
 import kazumy.project.zummy.listener.EventListener;
 import lombok.val;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
@@ -11,12 +12,12 @@ import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 public class UnmuteCMD extends BaseCommand {
 
 	public UnmuteCMD() {
-		super("unmute", "unmutar", "[%s]unmute [Membro]", Permission.MESSAGE_MANAGE);
+		super("unmute", "unmutar", "[%s]unmute [Membro]", "", Permission.MESSAGE_MANAGE);
 	}
 
 	@Override
 	public void execute(Member member, Message message) {
-		val role = message.getGuild().getRoleById("896996113331130391");
+		val role = message.getGuild().getRoleById("844763776199819265");
 		val args = message.getContentRaw().split(" ");
 		
 		if (args.length <= 1) {
@@ -41,5 +42,10 @@ public class UnmuteCMD extends BaseCommand {
 
 	@Override
 	public void buttonClickEvent(ButtonClickEvent event) {
+	}
+
+	@Override
+	public void configure() {
+		this.setEmoji(Emoji.fromUnicode(""));
 	}
 }

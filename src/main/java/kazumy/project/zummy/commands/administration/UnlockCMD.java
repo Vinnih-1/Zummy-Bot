@@ -3,6 +3,7 @@ package kazumy.project.zummy.commands.administration;
 import kazumy.project.zummy.commands.BaseCommand;
 import lombok.val;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
@@ -10,7 +11,7 @@ import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 public class UnlockCMD extends BaseCommand {
 
 	public UnlockCMD() {
-		super("unlock", "", "[%s]unlock", Permission.MANAGE_CHANNEL);
+		super("unlock", "", "[%s]unlock", "", Permission.MANAGE_CHANNEL);
 	}
 
 	@Override
@@ -23,5 +24,10 @@ public class UnlockCMD extends BaseCommand {
 
 	@Override
 	public void buttonClickEvent(ButtonClickEvent event) {
+	}
+
+	@Override
+	public void configure() {
+		this.setEmoji(Emoji.fromUnicode(""));
 	}
 }

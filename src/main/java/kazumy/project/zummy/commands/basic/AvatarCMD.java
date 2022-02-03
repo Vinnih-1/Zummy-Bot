@@ -1,9 +1,10 @@
-package kazumy.project.zummy.commands.basics;
+package kazumy.project.zummy.commands.basic;
 
 import kazumy.project.zummy.commands.BaseCommand;
 import lombok.val;
 import lombok.var;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
@@ -12,7 +13,7 @@ import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
 public class AvatarCMD extends BaseCommand {
 
 	public AvatarCMD() {
-		super("avatar", "", "[%s]avatar [Membro]", null);
+		super("avatar", "Retorna sua própria foto, ou do usuário mencionado", "", "[%s]avatar [Membro]", null);
 	}
 
 	@Override
@@ -38,5 +39,10 @@ public class AvatarCMD extends BaseCommand {
 
 	@Override
 	public void buttonClickEvent(ButtonClickEvent event) {
+	}
+	
+	@Override
+	public void configure() {
+		this.setEmoji(Emoji.fromUnicode("U+1F468"));
 	}
 }
