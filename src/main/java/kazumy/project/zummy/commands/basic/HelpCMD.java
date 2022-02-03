@@ -1,53 +1,55 @@
-package kazumy.project.zummy.commands.basics;
-
-import java.awt.Color;
-import java.util.ArrayList;
+package kazumy.project.zummy.commands.basic;
 
 import org.reflections.Reflections;
 
 import kazumy.project.zummy.commands.BaseCommand;
-import kazumy.project.zummy.listener.EventListener;
+import kazumy.project.zummy.components.MenuAction;
 import lombok.val;
-import lombok.var;
-import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emoji;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
+import net.dv8tion.jda.api.events.interaction.SelectionMenuEvent;
+import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu;
+import net.dv8tion.jda.api.interactions.components.selections.SelectionMenu.Builder;
 
-@SuppressWarnings("deprecation")
-public class HelpCMD extends BaseCommand {
+public class HelpCMD extends BaseCommand implements MenuAction {
 
 	public HelpCMD() {
-		super("help", "ajuda", "[%s]help", null);
+		super("help", "Exibe a listagem de comandos básicos", "ajuda", "[%s]help", null);
 	}
 
 	@Override
 	public void execute(Member member, Message message) {
-		val embed = new EmbedBuilder();
-		embed.setColor(Color.YELLOW);
-
-		embed.setTitle("Comandos Atuais");
-		embed.setThumbnail("https://cdn.discordapp.com/icons/832601856403701771/94a08bab250ed87791c68bec4e7a4013.png");
-		
-		val classes = new Reflections("kazumy.project.zummy.commands").getSubTypesOf(BaseCommand.class);
-		var commands = new ArrayList<BaseCommand>(); 
-		
+		Builder menu = SelectionMenu.create("help.menu");
+		val classes = new Reflections("kazumy.project.zummy.commands.basic").getSubTypesOf(BaseCommand.class);
+ 
 		classes.forEach(c -> {
 			try {
-				commands.add(c.newInstance());
+				val command = c.newInstance();
+				command.configure();
+				
+				menu.addOption(command.getName(), 
+						command.getName().concat(".value"),
+						command.getDescription(),
+						command.getEmoji());
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		});
-		val usages = new StringBuilder();
-
-		commands.stream().filter(c -> c.getPermission() == null).forEach(c -> usages.append("`").append(String.format(c.getUsage(), EventListener.PREFIX)).append("`").append("\n"));
-		
-		embed.setDescription(usages.toString());
-		message.reply(embed.build()).queue();
+		message.getTextChannel().sendMessage("Central de Ajuda para novos Membros").setActionRow(menu.build()).queue();
 	}
 
 	@Override
 	public void buttonClickEvent(ButtonClickEvent event) {
+	}
+
+	@Override
+	public void configure() {
+		this.setEmoji(Emoji.fromUnicode("U+2714"));
+	}
+
+	@Override
+	public void selectionMenu(SelectionMenuEvent event) {
 	}
 }
