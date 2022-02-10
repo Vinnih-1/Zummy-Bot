@@ -100,11 +100,11 @@ public class TicketCMD extends BaseCommand {
 			embed.setImage(config.getString("ticket.image"));
 			embed.setFooter(user.getAsTag(), user.getAvatarUrl());
 		
-		message.getTextChannel().sendMessage(embed.build()).setActionRow(Button.secondary(this.getButtonID() + "-" + "open-ticket", "Abrir um ticket").withEmoji(Emoji.fromUnicode("U+1F4EB"))).queue();
+		message.getTextChannel().sendMessage(embed.build()).setActionRow(Button.secondary(this.getButtonID() + "-" + "open-ticket", "Abrir um ticket").withEmoji(this.getEmoji())).queue();
 	}
 
 	@Override
 	public void configure() {
-		this.setEmoji(Emoji.fromUnicode(""));
+		this.setEmoji(Emoji.fromUnicode("U+1F4EB"));
 	}
 }
