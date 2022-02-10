@@ -67,10 +67,9 @@ public class SuggestCMD extends BaseCommand {
 		embed.setThumbnail(member.getUser().getAvatarUrl());
 		embed.setFooter("zPluginS © Todos os direitos reservados.", "https://cdn.discordapp.com/icons/832601856403701771/94a08bab250ed87791c68bec4e7a4013.png");
 		
-		message.getJDA().getTextChannelById("881849685453717514").sendMessage(embed.build())
+		message.getTextChannel().sendMessage(embed.build())
 		.setActionRow(Button.success(this.getButtonID() + "-" + member.getUser().getId() + "_suggest", "Sugerir"), 
 				Button.danger(this.getButtonID() + "-" + member.getUser().getId() + "_cancel", "Cancelar")).queue();
-
 	}
 	
 	@Override
