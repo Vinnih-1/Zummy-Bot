@@ -1,2 +1,4 @@
-config.json
+/configuration/
 /target/
+/.idea/
+dependency-reduced-pom.xml
