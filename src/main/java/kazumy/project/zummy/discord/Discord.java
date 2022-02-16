@@ -27,8 +27,9 @@ public class Discord {
 			System.out.println(config);
 			System.out.println(config.getString("bot.token"));
 			
-			bot = JDABuilder.createDefault(config.getString("bot.token")).enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES).build().awaitReady();
-			bot.addEventListener(new EventListener(config));
+			bot = JDABuilder.createDefault(config.getString("bot.token")).enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
+					.addEventListeners(new EventListener())
+					.build().awaitReady();
 			EventListener.PREFIX = config.getString("bot.prefix");
 			bot.getPresence().setPresence(OnlineStatus.ONLINE, Activity.playing(String.format(config.getString("bot.status"), EventListener.PREFIX)));
 		} catch (LoginException e) {
