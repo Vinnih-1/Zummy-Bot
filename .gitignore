@@ -23,4 +23,8 @@
 hs_err_pid*
 
 # Bot configuration file
+<<<<<<< HEAD
 config.yml
+=======
+config.yml
+>>>>>>> origin/main
