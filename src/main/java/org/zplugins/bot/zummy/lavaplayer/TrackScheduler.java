@@ -30,7 +30,7 @@ public class TrackScheduler extends AudioEventAdapter {
 
     @Override
     public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        PlayerManager.getInstance().loadAndPlay(MainZummy.discord.getOriginalJda().getTextChannelById("835219525825462272"),
+        PlayerManager.getInstance().loadAndPlay(MainZummy.discord.getOriginalJda().getTextChannelById("967482274096484533"),
                 "https://www.youtube.com/watch?v=0KvlwMd3C4Y");
     }
 }

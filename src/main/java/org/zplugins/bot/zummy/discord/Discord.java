@@ -40,7 +40,7 @@ public class Discord {
                         return null;
                     }
                 }).forEach(command -> {
-                    val guild = this.originalJda.getGuildById("832601856403701771");
+                    val guild = this.originalJda.getGuildById("896553346738057226");
                     guild.upsertCommand(command.commandData()).queue();
 
                     System.out.println("Comando " + command.getName() + " registrado com êxito!");
